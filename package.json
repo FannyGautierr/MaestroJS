@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/FannyGautierr/library-open-source/issues"
   },
-  "homepage": "https://github.com/FannyGautierr/library-open-source#readme"
+  "homepage": "https://github.com/FannyGautierr/library-open-source#readme",
+  "dependencies": {
+    "jest": "^29.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  }
 }
