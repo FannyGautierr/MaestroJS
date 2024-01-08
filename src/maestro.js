@@ -96,19 +96,21 @@ export default class StringMaestroJS {
     oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
 
     const gainNode = this.audioContext.createGain();
-
-    // Apply a fade-in envelope
     gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-    gainNode.gain.linearRampToValueAtTime(1, this.audioContext.currentTime); // Adjust the duration as needed
 
     oscillator.connect(gainNode);
+
     gainNode.connect(this.audioContext.destination);
 
-    oscillator.start(this.audioContext.currentTime + startTime);
-    oscillator.stop(this.audioContext.currentTime + startTime + duration);
+    // Apply attack envelope
+    gainNode.gain.linearRampToValueAtTime(1, this.audioContext.currentTime + startTime);
 
-    // Apply a fade-out envelope
-    gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + startTime + duration); // Adjust the duration as needed
+    oscillator.start(this.audioContext.currentTime + startTime);
+
+    // Apply release envelope
+    gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + startTime + duration);
+
+    // Stop the oscillator after the specified duration
     oscillator.stop(this.audioContext.currentTime + startTime + duration);
   }
 
