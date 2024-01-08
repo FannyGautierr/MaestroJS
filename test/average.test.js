@@ -1,4 +1,4 @@
-import {average} from '../src/average';
+import average from '../src/average';
 test('average of positive numbers', () => {
     expect(average([1, 2, 3, 4, 5])).toBe(3);
 });

@@ -14,7 +14,7 @@
  * average("not an array");
  */
 
-export function average(numbers) {
+export default function average(numbers) {
   if(typeof numbers !== typeof []) {
     throw new TypeError('average() expects an array');
   }
