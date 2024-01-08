@@ -1,6 +1,8 @@
 
 /*
 @param {array} numbers
+@assert {array} numbers.length > 0
+@throws {TypeError} if numbers is not an array
 @return {number} average
  */
 
