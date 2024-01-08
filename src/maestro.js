@@ -92,10 +92,16 @@ export default class StringMaestroJS {
 
   /**
    * Plays a melody.
-   * @param {string[]} melody - An array of musical notes to be played in sequence.
+   * @param {string|string[]} melody - A string or an array of musical notes to be played in sequence.
+   *                                  If a string is provided, notes should be separated by spaces or commas.
    * @param {number} [tempo=60] - The tempo of the melody in beats per minute.
    */
   playMelody(melody, tempo = 60) {
+    // Check if melody is a string and split it into an array if it is
+    if (typeof melody === 'string') {
+      melody = melody.split(/,\s*|\s+/); // Splits on commas or spaces
+    }
+
     const noteDuration = 60 / tempo;
     let currentTime = 0;
     let lastNote = null;

@@ -73,6 +73,5 @@ songCreator.addSequenceToTrack(trackIndex, kungFuFightingMelody, {
 });
 
 
-
-// Play the song
-songCreator.playSong();
+// Play a melody
+maestro.playMelody(imperialMarch.join(' '), 120); // Plays these notes in sequence at 120 BPM
