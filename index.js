@@ -33,4 +33,4 @@ const imperialMarch = [
 ];
 
 // Play a melody
-maestro.playMelody(imperialMarch, 120); // Plays these notes in sequence at 120 BPM
+maestro.playMelody(imperialMarch.join(' '), 120); // Plays these notes in sequence at 120 BPM
