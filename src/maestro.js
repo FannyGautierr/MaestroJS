@@ -56,6 +56,19 @@ export default class StringMaestroJS {
       'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#'
     };
 
+    const frenchToEnglish = {
+      'Do': 'C', 'Ré': 'D', 'Mi': 'E', 'Fa': 'F', 'Sol': 'G', 'La': 'A', 'Si': 'B',
+      'Ré#': 'D#', 'Mi#': 'E#', 'Fa#': 'F#', 'Sol#': 'G#', 'La#': 'A#',
+      'Dob': 'Db', 'Réb': 'Eb', 'Mib': 'Eb', 'Fab': 'Fb', 'Solb': 'Gb', 'Lab': 'Ab', 'Sib': 'Bb'
+    };
+
+    // Convert French notes to English notes
+    Object.keys(frenchToEnglish).forEach(frenchNote => {
+      if (note.startsWith(frenchNote)) {
+        note = note.replace(frenchNote, frenchToEnglish[frenchNote]);
+      }
+    });
+
     // Replace flat notes with their sharp equivalents
     if (note.includes("b")) {  // Checks for notes like 'Eb4'
       let baseNote = note.substring(0, 2);  // Gets 'Eb'
