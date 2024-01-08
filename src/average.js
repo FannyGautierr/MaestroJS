@@ -13,7 +13,7 @@
  * // throws TypeError
  * average("not an array");
  */
-
+NPM_SECRET
 export default function average(numbers) {
   if(typeof numbers !== typeof []) {
     throw new TypeError('average() expects an array');

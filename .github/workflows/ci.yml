@@ -1,0 +1,36 @@
+name: Continuous delivery
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    name: Continuous deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Init repository"
+        uses: actions/checkout@v3
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+
+      - name: 'Install dependencies'
+        run: npm install
+
+      - name: 'Run tests'
+        run: npm test
+
+      - name: 'Run eslint'
+        run: npx eslint ./src/**/*.js
+
+      - name: 'Publish to NPM'
+        uses: JS-DevTools/npm-publish@v2
+        with:
+          token: ${{ secrets.NPM_SECRET }}
+
+
