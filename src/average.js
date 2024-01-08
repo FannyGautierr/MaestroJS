@@ -20,3 +20,5 @@ export default function average(numbers) {
   }
   return numbers.reduce((a, b) => a + b) / numbers.length;
 }
+
+console.log("maestro")
