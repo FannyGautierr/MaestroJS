@@ -1,5 +1,7 @@
 import SongCreator from "../src/songCreator.js";
 
+const maestro = new StringMaestro();
+maestro.setOscillatorType('sawtooth')
 
 let songCreator = new SongCreator();
 
@@ -73,5 +75,13 @@ songCreator.addSequenceToTrack(trackIndex, kungFuFightingMelody, {
 });
 
 
+const kungFuFighting = [
+  'A4','A4','A4','B4','D5','-', "F#5", "-", "-", "E5", "-", "-", "E5", "-", "-", "F#5",
+  '.', '.', '.', '.', '.',
+  'B5', "-", "-", "A5", "-", "A5", "-", "F#5", "-", "-", "E5", "-", "-", "E5", "-", "-", "D5",
+  '.', '.', '.', '.', '.',
+  'A4','-','B4','D5','-', "F#5", "-", "-", "E5", "-", "-", "E5", "-", "-", "F#5",
+]
+
 // Play a melody
-maestro.playMelody(imperialMarch.join(' '), 120); // Plays these notes in sequence at 120 BPM
+maestro.playMelody(kungFuFighting, 450); // Plays these notes in sequence at 120 BPM
