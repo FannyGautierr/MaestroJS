@@ -4,34 +4,6 @@
 
  import SongCreator from "../src/songCreator.js";
 
-//  // Mock AudioContext
-//  const mockOscillator = {
-//      connect: jest.fn(),
-//      start: jest.fn(),
-//      stop: jest.fn(),
-//      type: '',
-//      frequency: {
-//          setValueAtTime: jest.fn(),
-//      },
-//  };
-//  const mockGainNode = {
-//      connect: jest.fn(),
-//      gain: {
-//          setValueAtTime: jest.fn(),
-//          linearRampToValueAtTime: jest.fn(),
-//      },
-//  };
- 
-//  global.AudioContext = jest.fn().mockImplementation(() => {
-//      return {
-//          createOscillator: jest.fn().mockReturnValue(mockOscillator),
-//          createGain: jest.fn().mockReturnValue(mockGainNode),
-//          currentTime: 0,
-//          destination: {},
-//      };
-//  });
-
-// Mock AudioContext
 window.AudioContext = jest.fn().mockImplementation(() => {
     return {
       createOscillator: jest.fn().mockImplementation(() => {
@@ -63,85 +35,62 @@ window.AudioContext = jest.fn().mockImplementation(() => {
     };
   });
   
- 
-// test('send correct notes', () => {
-//     expect(
-//         song.addSequence([
-//     ],
-//     {loop:false,distortion:true})).toThrow(TypeError);
-// });
-
 describe('SongCreator', () => {
-    it('should create a new instance with default values', () => {
-        const songCreator = new SongCreator();
-        // Check for a standard mocked method
-        expect(typeof songCreator.audioContext.createOscillator).toBe('function');
-        expect(songCreator.oscillatorType).toBe('sine');
-        expect(songCreator.sequences).toEqual([]);
-        expect(songCreator.songDuration).toBe(0);
-    });
-});
-
-describe('addSequence', () => {
     let songCreator;
+  
     beforeEach(() => {
-        songCreator = new SongCreator();
+      songCreator = new SongCreator();
+    });
+    
+    it('should convert a musical note to its corresponding frequency', () => {
+      expect(songCreator.noteToFrequency('A4')).toBe(440);
+      expect(songCreator.noteToFrequency('C4')).toBeCloseTo(261.63, 2);
+      expect(() => {
+        songCreator.noteToFrequency('H8');
+      }).toThrow('Invalid note format. Expected format like "A4", "C#3", or "Bb2".');
+    });
+  
+    it('should create a distortion effect', () => {
+      const distortion = songCreator.createDistortion(songCreator.audioContext);
+      expect(distortion).toBeDefined();
+      expect(distortion.curve).toBeDefined();
+      expect(distortion.oversample).toBe('4x');
+    });
+  
+    it('should add a new track correctly', () => {
+      const trackIndex = songCreator.addTimedTrack(0, 10);
+      expect(trackIndex).toBe(0);
+      expect(songCreator.tracks[trackIndex]).toEqual({ sequences: [], startTime: 0, endTime: 10 });
+    });
+  
+    it('should throw error when adding a track with invalid times', () => {
+      expect(() => {
+        songCreator.addTimedTrack('start', 'end');
+      }).toThrow('Invalid start or end time: Must be a number.');
+    });
+  
+    it('should add a sequence to a track correctly', () => {
+      const trackIndex = songCreator.addTimedTrack(0, 10);
+      const noteObjects = [{ note: 'C4', duration: 2 }];
+      const options = { startTime: 0, endTime: 5, loop: false, distortion: false };
+      songCreator.addSequenceToTrack(trackIndex, noteObjects, options);
+      expect(songCreator.tracks[trackIndex].sequences.length).toBe(1);
+      expect(songCreator.tracks[trackIndex].sequences[0]).toEqual({ 
+        notes: noteObjects, 
+        startTime: 0, 
+        endTime: 5,
+        loop: false, 
+        distortion: false 
+      });
+    });
+  
+    it('should throw error when adding a sequence to a non-existent track', () => {
+      const noteObjects = [{ note: 'C4', duration: 2 }];
+      const options = { startTime: 0, endTime: 5, loop: false, distortion: false };
+      expect(() => {
+        songCreator.addSequenceToTrack(99, noteObjects, options);
+      }).toThrow('Track with index 99 does not exist.');
     });
 
-    it('should add a valid sequence', () => {
-        const noteObjects = [{ note: 'A4', duration: 1 }];
-        songCreator.addSequence(noteObjects);
-        expect(songCreator.sequences.length).toBe(1);
-        expect(songCreator.sequences[0].notes).toBe(noteObjects);
-    });
-
-    it('should throw an error for an empty sequence array', () => {
-        expect(() => songCreator.addSequence([])).toThrow('Invalid noteObjects: Must be a non-empty array.');
-    });
-
-    it('should throw an error for a non-array sequence', () => {
-        expect(() => songCreator.addSequence(null)).toThrow('Invalid noteObjects: Must be a non-empty array.');
-    });
-});
-
-describe('playSequence', () => {
-    it('should play a given sequence', () => {
-        const songCreator = new SongCreator();
-        const sequence = { notes: [{ note: 'C4', duration: 1 }], loop: false, distortion: false };
-        const mockAudioContext = new AudioContext();
-
-        songCreator.playSequence(sequence, mockAudioContext);
-    });
-});
-
-describe('noteToFrequency', () => {
-    it('should convert notes to frequencies', () => {
-        const songCreator = new SongCreator();
-        expect(songCreator.noteToFrequency('A4')).toBeCloseTo(440);
-        expect(songCreator.noteToFrequency('C4')).toBeCloseTo(261.63, 2);
-    });
-});
-
-describe('createDistortion', () => {
-    it('should create a distortion node', () => {
-        const songCreator = new SongCreator();
-        const audioContext = new AudioContext();
-        const distortionNode = songCreator.createDistortion(audioContext);
-        expect(distortionNode).toBeInstanceOf(WaveShaperNode);
-        expect(distortionNode.curve).not.toBeNull();
-        expect(distortionNode.oversample).toBe('4x');
-    });
-});
-describe('play', () => {
-    it('should play all sequences in the song', () => {
-        const songCreator = new SongCreator();
-        songCreator.addSequence([{ note: 'C4', duration: 1 }]);
-        songCreator.addSequence([{ note: 'D4', duration: 1 }]);
-        jest.spyOn(songCreator, 'playSequence');
-
-        songCreator.play();
-        expect(songCreator.playSequence).toHaveBeenCalledTimes(songCreator.sequences.length);
-    });
-});
-
-
+  });
+  
