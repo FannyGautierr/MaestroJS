@@ -93,4 +93,8 @@ describe('SongCreator', () => {
     });
 
   });
+<<<<<<< HEAD
   
+=======
+  
+>>>>>>> 9c1229c (testing & jsDocs)
