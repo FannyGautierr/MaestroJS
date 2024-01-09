@@ -1,6 +1,6 @@
-import StringMaestro from './src/maestro.js';
+import MaestroWizard from './src/maestro-wizard.js';
 
-const maestro = new StringMaestro();
+const maestro = new MaestroWizard();
 maestro.setOscillatorType('sawtooth')
 
 const maryHadALittleLamb = [
