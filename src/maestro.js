@@ -25,6 +25,16 @@ export default class StringMaestroJS {
    * @param {number} [duration=0.5] - The duration in seconds for which the note should play.
    */
   playNote(note, startTime, duration = 0.5) {
+    if (typeof note !== 'string') {
+      throw new TypeError('Expected a string for note');
+    }
+    if (typeof startTime !== 'number') {
+      throw new TypeError('Expected a number for startTime');
+    }
+    if (typeof duration !== 'number') {
+      throw new TypeError('Expected a number for duration');
+    }
+
     const frequency = this.noteToFrequency(note);
     if (frequency) {
       this.playFrequency(frequency, startTime, duration);
@@ -37,6 +47,13 @@ export default class StringMaestroJS {
    * @param {number} [duration=1] - The duration in seconds for which each note in the chord should play.
    */
   playChord(notes, duration = 1) {
+    if (!Array.isArray(notes)) {
+      throw new TypeError('Expected an array of notes');
+    }
+    if (typeof duration !== 'number') {
+      throw new TypeError('Expected a number for duration');
+    }
+
     notes.forEach(note => {
       this.playNote(note, duration);
     });
@@ -48,6 +65,10 @@ export default class StringMaestroJS {
    * @returns {number} The frequency of the note in hertz.
    */
   noteToFrequency(note) {
+    if (typeof note !== 'string') {
+      throw new TypeError('Expected a string for note');
+    }
+
     const A4 = 440;
     const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
@@ -91,6 +112,16 @@ export default class StringMaestroJS {
    * @private
    */
   playFrequency(frequency, startTime, duration) {
+    if (typeof frequency !== 'number') {
+      throw new TypeError('Expected a number for frequency');
+    }
+    if (typeof startTime !== 'number') {
+      throw new TypeError('Expected a number for startTime');
+    }
+    if (typeof duration !== 'number') {
+      throw new TypeError('Expected a number for duration');
+    }
+
     const oscillator = this.audioContext.createOscillator();
     oscillator.type = this.oscillatorType;
     oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
@@ -121,6 +152,13 @@ export default class StringMaestroJS {
    * @param {number} [tempo=60] - The tempo of the melody in beats per minute.
    */
   playMelody(melody, tempo = 60) {
+    if (typeof melody !== 'string' && !Array.isArray(melody)) {
+      throw new TypeError('Expected a string or an array for melody');
+    }
+    if (typeof tempo !== 'number') {
+      throw new TypeError('Expected a number for tempo');
+    }
+
     // Check if melody is a string and split it into an array if it is
     if (typeof melody === 'string') {
       melody = melody.split(/,\s*|\s+/); // Splits on commas or spaces
@@ -155,6 +193,11 @@ export default class StringMaestroJS {
    * @param {OscillatorType} type - The type of oscillator to use (e.g., 'sine', 'square').
    */
   setOscillatorType(type) {
+    const validTypes = ['custom', 'sine', 'square', 'sawtooth', 'triangle'];
+    if (typeof type !== 'string' || !validTypes.includes(type)) {
+      throw new TypeError('Expected a string for oscillator type');
+    }
+
     this.oscillatorType = type;
   }
 }
