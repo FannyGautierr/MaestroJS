@@ -144,8 +144,8 @@ export default class StringMaestroJS {
       }
     });
 
-    // Play the last note if the melody ends with a dash
-    if (extendDuration > 0 && lastNote) {
+    // Play the last note
+    if (lastNote) {
       this.playNote(lastNote, currentTime, noteDuration + extendDuration);
     }
   }
