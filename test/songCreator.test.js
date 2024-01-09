@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
- import SongCreator from "../src/songCreator.js";
+ import SongCreator from "../src/song-creator.ts";
 
 window.AudioContext = jest.fn().mockImplementation(() => {
     return {
