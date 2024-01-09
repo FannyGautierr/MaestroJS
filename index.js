@@ -1,1 +1,1 @@
-export { default as MaestroWizard } from './src/maestro-wizard';
+export { default as MaestroWizard } from './dist/maestro-wizard.js';

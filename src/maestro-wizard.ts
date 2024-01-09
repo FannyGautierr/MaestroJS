@@ -1,7 +1,17 @@
+declare global {
+  interface Window {
+    AudioContext: typeof AudioContext;
+    webkitAudioContext: typeof AudioContext;
+  }
+}
+
 /**
  * Represents a music player that can play notes, chords, and melodies.
  */
-export default class StringMaestroJS {
+export default class MaestroWizard {
+  private audioContext: AudioContext;
+  private oscillatorType: OscillatorType;
+
   /**
    * Creates a StringMaestroJS instance.
    */
@@ -24,7 +34,7 @@ export default class StringMaestroJS {
    * @param {number} startTime - The time at which the note should start playing.
    * @param {number} [duration=0.5] - The duration in seconds for which the note should play.
    */
-  playNote(note, startTime, duration = 0.5) {
+  playNote(note: string, startTime: number, duration: number = 0.5) {
     if (typeof note !== 'string') {
       throw new TypeError('Expected a string for note');
     }
@@ -46,7 +56,7 @@ export default class StringMaestroJS {
    * @param {string[]} notes - An array of musical notes to be played as a chord.
    * @param {number} [duration=1] - The duration in seconds for which each note in the chord should play.
    */
-  playChord(notes, duration = 1) {
+  playChord(notes: string[], duration = 1) {
     if (!Array.isArray(notes)) {
       throw new TypeError('Expected an array of notes');
     }
@@ -64,7 +74,7 @@ export default class StringMaestroJS {
    * @param {string} note - The musical note to convert (e.g., 'A4').
    * @returns {number} The frequency of the note in hertz.
    */
-  noteToFrequency(note) {
+  noteToFrequency(note: string): number {
     if (typeof note !== 'string') {
       throw new TypeError('Expected a string for note');
     }
@@ -73,11 +83,11 @@ export default class StringMaestroJS {
     const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
     // A map to convert flat notes to sharp notes
-    const flatToSharp = {
+    const flatToSharp: Record<string, string> = {
       'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#'
     };
 
-    const frenchToEnglish = {
+    const frenchToEnglish: Record<string, string> = {
       'Do': 'C', 'Ré': 'D', 'Mi': 'E', 'Fa': 'F', 'Sol': 'G', 'La': 'A', 'Si': 'B',
       'Ré#': 'D#', 'Mi#': 'E#', 'Fa#': 'F#', 'Sol#': 'G#', 'La#': 'A#',
       'Dob': 'Db', 'Réb': 'Eb', 'Mib': 'Eb', 'Fab': 'Fb', 'Solb': 'Gb', 'Lab': 'Ab', 'Sib': 'Bb'
@@ -93,14 +103,14 @@ export default class StringMaestroJS {
     // Replace flat notes with their sharp equivalents
     if (note.includes("b")) {  // Checks for notes like 'Eb4'
       let baseNote = note.substring(0, 2);  // Gets 'Eb'
-      let octave = parseInt(note.charAt(2), 10);
+      const octave = parseInt(note.charAt(2), 10);
       baseNote = flatToSharp[baseNote] || baseNote;
       note = baseNote + octave;
     }
 
-    let baseNote = note.slice(0, -1);
-    let octave = parseInt(note.slice(-1), 10);
-    let semitones = notes.indexOf(baseNote) - notes.indexOf('A') + (octave - 4) * 12;
+    const baseNote = note.slice(0, -1);
+    const octave = parseInt(note.slice(-1), 10);
+    const semitones = notes.indexOf(baseNote) - notes.indexOf('A') + (octave - 4) * 12;
     return A4 * Math.pow(2, semitones / 12);
   }
 
@@ -111,7 +121,7 @@ export default class StringMaestroJS {
    * @param {number} duration - The duration in seconds for which to play the frequency.
    * @private
    */
-  playFrequency(frequency, startTime, duration) {
+  playFrequency(frequency: number, startTime: number, duration: number) {
     if (typeof frequency !== 'number') {
       throw new TypeError('Expected a number for frequency');
     }
@@ -151,7 +161,7 @@ export default class StringMaestroJS {
    *                                  If a string is provided, notes should be separated by spaces or commas.
    * @param {number} [tempo=60] - The tempo of the melody in beats per minute.
    */
-  playMelody(melody, tempo = 60) {
+  playMelody(melody: string | string[], tempo: number = 60) {
     if (typeof melody !== 'string' && !Array.isArray(melody)) {
       throw new TypeError('Expected a string or an array for melody');
     }
@@ -166,7 +176,7 @@ export default class StringMaestroJS {
 
     const noteDuration = 60 / tempo;
     let currentTime = 0;
-    let lastNote = null;
+    let lastNote: string | null = null;
     let extendDuration = 0;
 
     melody.forEach(symbol => {
@@ -192,7 +202,7 @@ export default class StringMaestroJS {
    * Sets the oscillator type for sound generation.
    * @param {OscillatorType} type - The type of oscillator to use (e.g., 'sine', 'square').
    */
-  setOscillatorType(type) {
+  setOscillatorType(type: OscillatorType) {
     const validTypes = ['custom', 'sine', 'square', 'sawtooth', 'triangle'];
     if (typeof type !== 'string' || !validTypes.includes(type)) {
       throw new TypeError('Expected a string for oscillator type');
