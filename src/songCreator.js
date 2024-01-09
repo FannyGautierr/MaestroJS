@@ -159,7 +159,7 @@ export default class SongCreator {
             const k = typeof amount === 'number' ? amount : 50;
             const n_samples = 44100;
             const curve = new Float32Array(n_samples);
-            const deg = Math.PI / 180;
+           
 
             for (let i = 0; i < n_samples; ++i ) {
                 const x = i * 2 / n_samples - 1;
@@ -229,7 +229,7 @@ export default class SongCreator {
      */
     stopTrack(track) {
         track.sequences.forEach(sequence => {
-            sequence.activeNodes.forEach(({ oscillator, gainNode }) => {
+            sequence.activeNodes.forEach(({ oscillator }) => {
                 try {
                     oscillator.stop();
                 } catch (error) {
