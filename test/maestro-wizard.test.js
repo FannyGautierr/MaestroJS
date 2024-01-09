@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import MaestroWizard from "../src/maestro-wizard.ts";
+import MaestroWizard from "../dist/maestro-wizard.js";
 
 // Mock AudioContext
 const mockOscillator = {
