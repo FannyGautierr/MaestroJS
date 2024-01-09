@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/FannyGautierr/library-open-source#readme",
   "dependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",
