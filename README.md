@@ -65,7 +65,7 @@ Plays a melody.
 - `notes`: An array of notes to play, or a string of space-separated notes.
 - `tempo`: The tempo, in beats per minute, of the melody.
 
-## `setOscillatorType(type)`
+### `setOscillatorType(type)`
 Sets the oscillator type.
 
 - `type`: The oscillator type. Can be one of the following: `'sine'`, `'square'`, `'sawtooth'`, `'triangle'`, `'custom'`.
