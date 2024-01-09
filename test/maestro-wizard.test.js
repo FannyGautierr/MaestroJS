@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import StringMaestro from "../src/maestro.js";
+import MaestroWizard from "../src/maestro-wizard.js";
 
 // Mock AudioContext
 const mockOscillator = {
@@ -31,7 +31,7 @@ global.AudioContext = jest.fn().mockImplementation(() => {
   };
 });
 
-const maestro = new StringMaestro();
+const maestro = new MaestroWizard();
 
 test('playNote', () => {
   expect(() => maestro.playNote(1, 0, 1)).toThrow(TypeError);

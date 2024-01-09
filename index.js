@@ -1,6 +1,7 @@
 import SongCreator from "../src/songCreator.js";
+import MaestroWizard from './src/maestro-wizard.js';
 
-const maestro = new StringMaestro();
+const maestro = new MaestroWizard();
 maestro.setOscillatorType('sawtooth')
 
 let songCreator = new SongCreator();
