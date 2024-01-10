@@ -72,75 +72,53 @@ Sets the oscillator type.
 
 
 
-## SongCreator - create tracks by overlaping melodies and tracks 
+## SongCreator - create tracks by overlaping melodies and tracks
+SongCreator is designed for creating and manipulating audio sequences in web applications. It leverages the Web Audio API to allow users to build complex musical arrangements programmatically
 
-First, import `SongCreator` into your project:
+## Setup
+
+Import `SongCreator` into your project:
 
 ```javascript
-import SongCreator from 'songCreator';
+import SongCreator from 'maestro-wizard';
 ```
 
 Then, create a new instance of `SongCreator`:
 
 ```javascript
-const maestro = new SongCreator();
+const song = new SongCreator();
 ```
 
-### Methods
+### Creating Tracks
+You can create tracks with specific start and end times.
+```javascript
+let trackIndex = songCreator.addTimedTrack(0, 20); // Start at 0 seconds, end at 20 seconds
+```
+### Adding Sequences to Tracks
+Add sequences of notes to your tracks. Each note has a pitch (like 'C4', 'A2') and a duration in seconds.
 
-#### addSequence
+```javascript
+let bassNotes = [
+{ note: 'C2', duration: 1 },
+// ... more notes
+];
 
-- `addSequence(noteObjects, options)`: Adds a new sequence to the song.
-  - `noteObjects` (Array<Object>): An array of note objects to be played in the sequence.
-  - `options` (Object): Optional settings for the sequence including `loop` and `distortion`.
+songCreator.addSequenceToTrack(trackIndex, bassNotes, { startTime: 0, endTime: 10, loop: false, distortion: false });
+```
 
-#### playSequence
+### Playing the Song
+Once you've set up your tracks and sequences, you can play the song.
 
-- `playSequence(sequence, audioContext)`: Plays a specific sequence.
-  - `sequence` (Object): The sequence to play.
-  - `audioContext` (AudioContext): The audio context to use for playing the sequence.
+`````javascript
+songCreator.playSong();
+`````
 
-#### noteToFrequency
 
-- `noteToFrequency(note)`: Converts a musical note to its corresponding frequency.
-  - `note` (string): The musical note to convert.
-
-#### createDistortion
-
-- `createDistortion(audioContext)`: Creates a distortion effect.
-  - `audioContext` (AudioContext): The audio context for the distortion.
-
-#### play
-
-- `play()`: Plays all sequences in the song.
-
-#### addTimedTrack
-
-- `addTimedTrack(startTime, endTime)`: Adds a track with specified start and end times.
-  - `startTime` (number): The start time of the track in seconds.
-  - `endTime` (number): The end time of the track in seconds.
-
-#### playSong
-
-- `playSong()`: Schedules and plays the entire song with all tracks and their sequences.
-
-#### stopTrack
-
-- `stopTrack(track)`: Stops all sequences in a track.
-    - `track` (Object): The track to stop.
-
-#### playTrack
-
-- `playTrack(track)`: Plays a single track.
-  - `track` (Object): The track to play.
-
-#### addSequenceToTrack
-
-- `addSequenceToTrack(trackIndex, noteObjects, options)`: Adds a sequence with specific configurations to a track.
-  - `trackIndex` (number): The index of the track.
-  - `noteObjects` (Array<Object>): An array of note objects to be played.
-  - `options` (Object): The options for the sequence (start time, end time, loop, distortion).
-
+## Features
+- **Dynamic Audio Sequence Creation**: Easily create and manipulate sequences of notes.
+- **Track Management**: Organize your music into tracks with specific start and end times.
+- **Audio Effects**: Apply effects like looping and distortion to your sequences.
+- **Flexible Note Formatting**: Support for various musical note formats.
 
 ## License
 MaestroWizardJS is open-source and available under the MIT License.

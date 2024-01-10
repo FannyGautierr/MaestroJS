@@ -81,7 +81,7 @@ describe('SongCreator', () => {
             endTime: 5,
             loop: false,
             distortion: false,
-            activeNodes: [] // Expect an empty activeNodes array
+            activeNodes: []
         });
     });
 
